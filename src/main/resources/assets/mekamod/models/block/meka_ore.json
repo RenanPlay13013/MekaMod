@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "mekamod:block/meka_ore_cj",
+    "particle": "mekamod:block/meka_ore_cj"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    "A A",
+    "AAA",
+    "AAA"
+  ],
+  "key": {
+    "A": {
+      "item": "mekamod:meka_ingot"
+    }
+  },
+  "result": {
+    "item": "mekamod:meka_chestplate",
+    "count": 1
+  }
+}

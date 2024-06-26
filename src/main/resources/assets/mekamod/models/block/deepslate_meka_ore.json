@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "mekamod:block/deepslate_meka_ore",
+    "up": "mekamod:block/deepslate_meka_ore",
+    "north": "mekamod:block/deepslate_meka_ore",
+    "east": "mekamod:block/deepslate_meka_ore",
+    "south": "mekamod:block/deepslate_meka_ore",
+    "west": "mekamod:block/deepslate_meka_ore",
+    "particle": "mekamod:block/deepslate_meka_ore"
+  },
+  "render_type": "solid"
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "combat",
+  "pattern": [
+    " A ",
+    " A ",
+    " B "
+  ],
+  "key": {
+    "A": {
+      "item": "mekamod:meka_ingot"
+    },
+    "B": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "mekamod:meka_sword",
+    "count": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "AAA",
+    " B ",
+    " B "
+  ],
+  "key": {
+    "A": {
+      "item": "mekamod:meka_ingot"
+    },
+    "B": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "mekamod:meka_pickaxe",
+    "count": 1
+  }
+}

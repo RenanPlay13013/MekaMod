@@ -1,0 +1,33 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "tools",
+    "pattern": [
+      "ABC",
+      "EFD",
+      " F "
+    ],
+    "key": {
+      "A": {
+        "item": "mekamod:meka_axe"
+      },
+      "B": {
+        "item": "mekamod:meka_shovel"
+      },
+      "C": {
+        "item": "mekamod:meka_pickaxe"
+      },
+      "D": {
+        "item": "mekamod:meka_sword"
+      },
+      "E": {
+        "item": "mekamod:meka_hoe"
+      },
+      "F": {
+        "item": "minecraft:stick"
+      }
+    },
+    "result": {
+      "item": "mekamod:meka_paxel",
+      "count": 1
+    }
+  }
