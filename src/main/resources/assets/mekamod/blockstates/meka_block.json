@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "mekamod:block/meka_block"
+    }
+  }
+}

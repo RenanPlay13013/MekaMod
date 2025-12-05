@@ -1,0 +1,38 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      },
+      {
+        "item": "mekamod:meka_nugget"
+      }
+    ],
+    "result": {
+      "item": "mekamod:meka_ingot",
+      "count": 1
+    }
+  }
+  

@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "tools",
+    "pattern": [
+      "ACA",
+      "CBC",
+      "ACA"
+    ],
+    "key": {
+      "A": {
+        "tag": "mekamod:meka_food_vegetables"
+      },
+      "B": {
+        "item": "minecraft:honey_bottle"
+      },
+
+      "C": {
+        "tag": "mekamod:meka_food_meats"
+      }
+    },
+    "result": {
+      "item": "mekamod:meka_food",
+      "count": 3
+    }
+  }
