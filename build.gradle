@@ -3,9 +3,10 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = '1.20-1.0.0.0'
+version = mod_version
 group = 'net.mekaminers'
 
 base {
@@ -120,6 +121,7 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+
 }
 
 dependencies {

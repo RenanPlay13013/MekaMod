@@ -3,6 +3,7 @@ package net.mekaminers.mekamod;
 import net.mekaminers.mekamod.materials.MekaBlock;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,4 +15,5 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> MEKA_BLOCK = BLOCKS.register("meka_block",
             MekaBlock::new);
+
 }

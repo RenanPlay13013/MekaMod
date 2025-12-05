@@ -31,5 +31,8 @@ public class CreativeTabRegistry {
                         output.accept(ItemRegistry.MEKA_INGOT.get());
                         output.accept(ItemRegistry.MEKA_NUGGET.get());
                         output.accept(ItemRegistry.RAW_MEKA.get());
+                        output.accept(ItemRegistry.DIVIN_POTATO.get());
+                        output.accept(ItemRegistry.DIVIN_BREAD.get());
+                        output.accept(ItemRegistry.DIVIN_CAPUTINO.get());
                     }).build());
 }
