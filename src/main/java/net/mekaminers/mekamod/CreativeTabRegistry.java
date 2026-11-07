@@ -26,6 +26,7 @@ public class CreativeTabRegistry {
                         output.accept(ItemRegistry.MEKA_CHESTPLATE.get());
                         output.accept(ItemRegistry.MEKA_LEGGINGS.get());
                         output.accept(ItemRegistry.MEKA_BOOTS.get());
+                        ItemRegistry.getMekaGlove().ifPresent(glove -> output.accept(glove));
                         output.accept(ItemRegistry.MEKA_FOOD.get());
                         output.accept(BlockRegistry.MEKA_BLOCK.get());
                         output.accept(ItemRegistry.MEKA_INGOT.get());

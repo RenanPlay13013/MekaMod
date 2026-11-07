@@ -17,7 +17,7 @@
   "item.mekamod.meka_ingot": "Meka Ingot",
   "item.mekamod.divin_bread": "Divin Bread",
   "item.mekamod.divin_potato": "Divin Potato",
-  "item.mekamod.divin_caputino": "Divin Caputino"
-
-
+  "item.mekamod.divin_caputino": "Divin Caputino",
+  "item.mekamod.meka_glove": "Meka Glove",
+  "item.mekamod.meka_glove.desc": "Enables Auto Attack when equipped"
 }

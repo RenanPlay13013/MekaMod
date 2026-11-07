@@ -1,6 +1,9 @@
 package net.mekaminers.mekamod;
 
 import com.mojang.logging.LogUtils;
+import net.mekaminers.mekamod.client.ClientAutoAttackHandler;
+import net.mekaminers.mekamod.combat.AutoAttackHandler;
+import net.mekaminers.mekamod.network.MekaNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -9,6 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -35,6 +39,15 @@ public class MekaMod {
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        MekaNetwork.register();
+
+        // The glove only exists with Curios, so neither side of its auto-attack
+        // is hooked up without it.
+        if (MekaCompat.isCuriosLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new AutoAttackHandler());
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientAutoAttackHandler::register);
+        }
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);

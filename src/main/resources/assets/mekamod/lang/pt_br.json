@@ -17,5 +17,7 @@
   "item.mekamod.meka_ingot": "Barra de Meka",
   "item.mekamod.divin_bread": "Pão Divino",
   "item.mekamod.divin_potato": "Batata Divina",
-  "item.mekamod.divin_caputino": "Caputino Divino"
+  "item.mekamod.divin_caputino": "Caputino Divino",
+  "item.mekamod.meka_glove": "Luva de Meka",
+  "item.mekamod.meka_glove.desc": "Habilita ataque automático quando equipado"
 }

@@ -68,3 +68,11 @@ description='''Complemento para MekaMiners Brasil'''
 # stop your mod loading on the server for example.
 #[features.${mod_id}]
 #openGLVersion="[3.2,)"
+# Optional: enables the Meka Glove and its auto-attack. Without Curios the item
+# is never registered, so the mod runs fine on its own.
+[[dependencies.mekamod]]
+    modId="curios"
+    mandatory=false
+    versionRange="[5.2,)"
+    ordering="AFTER"
+    side="BOTH"

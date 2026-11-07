@@ -1,5 +1,6 @@
 package net.mekaminers.mekamod;
 
+import net.mekaminers.mekamod.curios.MekaGlove;
 import net.mekaminers.mekamod.materials.MekaIngot;
 import net.mekaminers.mekamod.materials.MekaNugget;
 import net.mekaminers.mekamod.materials.RawMeka;
@@ -14,6 +15,9 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class ItemRegistry {
 
@@ -48,6 +52,22 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> MEKA_SWORD = ITEMS.register("meka_sword",
             () -> new MekaSword());
+
+    /**
+     * Optional item: without Curios there is no slot to wear it in, so it is not
+     * registered at all rather than existing as an unusable item. The
+     * {@code MekaGlove::new} reference is only linked if this branch runs, which
+     * keeps the Curios-dependent class off the classpath otherwise.
+     */
+    @Nullable
+    private static final RegistryObject<Item> MEKA_GLOVE = MekaCompat.isCuriosLoaded()
+            ? ITEMS.register("meka_glove", MekaGlove::new)
+            : null;
+
+    /** The glove, or empty when Curios is not installed. */
+    public static Optional<Item> getMekaGlove() {
+        return MEKA_GLOVE == null ? Optional.empty() : Optional.of(MEKA_GLOVE.get());
+    }
 
     public static final RegistryObject<Item> MEKA_BLOCK = ITEMS.register("meka_block",
             () -> new BlockItem(BlockRegistry.MEKA_BLOCK.get(), new Item.Properties()));
