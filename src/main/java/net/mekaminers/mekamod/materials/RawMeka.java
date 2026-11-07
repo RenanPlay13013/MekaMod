@@ -1,6 +1,5 @@
 package net.mekaminers.mekamod.materials;
 
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
 public class RawMeka extends Item {

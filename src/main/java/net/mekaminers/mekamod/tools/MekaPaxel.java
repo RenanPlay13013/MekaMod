@@ -1,142 +1,101 @@
 package net.mekaminers.mekamod.tools;
 
 import net.mekaminers.mekamod.ItemRegistry;
-import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.common.ToolAction;
+import net.mekaminers.mekamod.MekaMod;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.TieredItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.network.chat.Component;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 
-import java.util.List;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.ImmutableMultimap;
+/**
+ * A true multi-tool: it digs everything a pickaxe, axe, shovel or hoe can dig,
+ * and its right-click behaviour is vanilla's own (stripping logs, scraping and
+ * de-waxing copper, flattening paths, extinguishing campfires, tilling soil),
+ * so it keeps working with blocks added by other mods.
+ */
+public class MekaPaxel extends DiggerItem {
 
-public class MekaPaxel extends TieredItem {
-    public MekaPaxel() {
-        super(new Tier() {
-            public int getUses() {
-                return 3000;
-            }
+    /** Union of the four vanilla mineable tags; see data/mekamod/tags/blocks/mineable/paxel.json. */
+    public static final TagKey<Block> MINEABLE_WITH_PAXEL =
+            TagKey.create(Registries.BLOCK, new ResourceLocation(MekaMod.MODID, "mineable/paxel"));
 
-            public float getSpeed() {
-                return 160f;
-            }
-
-            public float getAttackDamageBonus() {
-                return 201f;
-            }
-
-            public int getLevel() {
-                return 4;
-            }
-
-            public int getEnchantmentValue() {
-                return 50;
-            }
-
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack(ItemRegistry.MEKA_INGOT.get()));
-            }
-        }, new Item.Properties());
-    }
-
-    @Override
-    public boolean isCorrectToolForDrops(BlockState blockstate) {
-        int tier = 30;
-        if (tier < 3 && blockstate.is(BlockTags.NEEDS_DIAMOND_TOOL)) {
-            return false;
-        } else if (tier < 2 && blockstate.is(BlockTags.NEEDS_IRON_TOOL)) {
-            return false;
-        } else {
-            return tier < 1 && blockstate.is(BlockTags.NEEDS_STONE_TOOL)
-                    ? false
-                    : (blockstate.is(BlockTags.MINEABLE_WITH_AXE) || blockstate.is(BlockTags.MINEABLE_WITH_HOE) || blockstate.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockstate.is(BlockTags.MINEABLE_WITH_SHOVEL));
+    public static final Tier TIER = new Tier() {
+        @Override
+        public int getUses() {
+            return 3000;
         }
+
+        @Override
+        public float getSpeed() {
+            return 200f;
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return 299f;
+        }
+
+        @Override
+        public int getLevel() {
+            return 4;
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return 50;
+        }
+
+        @Override
+        public Ingredient getRepairIngredient() {
+            return Ingredient.of(ItemRegistry.MEKA_INGOT.get());
+        }
+    };
+
+    /**
+     * Vanilla items whose {@code useOn} holds the block-interaction logic we reuse,
+     * in the order vanilla itself would try them. They are only used as behaviour
+     * providers: each one reads the stack, player and block out of the context, so
+     * the paxel stack is what gets damaged and the paxel is what gets the advancement.
+     */
+    private static final Item[] USE_ON_BEHAVIOURS = {
+            Items.NETHERITE_AXE,    // strip, scrape, wax off
+            Items.NETHERITE_SHOVEL, // flatten, extinguish campfire
+            Items.NETHERITE_HOE     // till
+    };
+
+    public MekaPaxel() {
+        super(0f, -1f, TIER, MINEABLE_WITH_PAXEL, new Item.Properties());
     }
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-        return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction)
+        return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction)
+                || ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction)
+                || ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction)
+                || ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction)
                 || ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
     }
 
     @Override
-    public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-        return 120f;
-    }
-
-    @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        if (equipmentSlot == EquipmentSlot.MAINHAND) {
-            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 299f, AttributeModifier.Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -1, AttributeModifier.Operation.ADDITION));
-            return builder.build();
-        }
-        return super.getDefaultAttributeModifiers(equipmentSlot);
-    }
-
-    @Override
-    public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
-        itemstack.hurtAndBreak(1, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        return true;
-    }
-
-    @Override
-    public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
-        itemstack.hurtAndBreak(2, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-        return true;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-        super.appendHoverText(itemstack, world, list, flag);
-    }
-
-    @Override
     public InteractionResult useOn(UseOnContext context) {
-        Level world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        BlockState blockState = world.getBlockState(pos);
-        ItemStack itemStack = context.getItemInHand();
-
-        if (blockState.is(Blocks.GRASS_BLOCK) || blockState.is(Blocks.DIRT)) {
-            BlockState pathState = Blocks.DIRT_PATH.defaultBlockState();
-            world.setBlock(pos, pathState, 11);
-            world.playSound(context.getPlayer(), pos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-            itemStack.hurtAndBreak(1, context.getPlayer(), (p) -> p.broadcastBreakEvent(context.getHand()));
-            return InteractionResult.sidedSuccess(world.isClientSide);
-        } else if (blockState.is(Blocks.DIRT_PATH)) {
-            BlockState farmlandState = Blocks.FARMLAND.defaultBlockState();
-            world.setBlock(pos, farmlandState, 11);
-            world.playSound(context.getPlayer(), pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-            itemStack.hurtAndBreak(1, context.getPlayer(), (p) -> p.broadcastBreakEvent(context.getHand()));
-            return InteractionResult.sidedSuccess(world.isClientSide);
+        for (Item behaviour : USE_ON_BEHAVIOURS) {
+            InteractionResult result = behaviour.useOn(context);
+            if (result != InteractionResult.PASS) {
+                return result;
+            }
         }
-
         return super.useOn(context);
     }
 }

@@ -1,6 +1,10 @@
 package net.mekaminers.mekamod;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -17,7 +21,7 @@ import org.slf4j.Logger;
 public class MekaMod {
     public static final String MODID = "mekamod";
     private static final Logger LOGGER = LogUtils.getLogger();
-//hello
+
     public MekaMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
