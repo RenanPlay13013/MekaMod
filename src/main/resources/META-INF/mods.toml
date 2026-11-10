@@ -76,3 +76,12 @@ description='''Complemento para MekaMiners Brasil'''
     versionRange="[5.2,)"
     ordering="AFTER"
     side="BOTH"
+
+# Optional: enables the Meka Capacitor. Without EnderIO there is no machine to
+# install it in, so the item is never registered.
+[[dependencies.mekamod]]
+    modId="enderio"
+    mandatory=false
+    versionRange="[6.0,)"
+    ordering="AFTER"
+    side="BOTH"

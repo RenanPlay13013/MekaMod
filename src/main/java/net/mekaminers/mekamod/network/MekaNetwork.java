@@ -42,6 +42,12 @@ public final class MekaNetwork {
                 .decoder(buf -> new ResetAttackCooldownPacket())
                 .consumerMainThread(ResetAttackCooldownPacket::handle)
                 .add();
+
+        CHANNEL.messageBuilder(ConfigSyncPacket.class, nextId++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(ConfigSyncPacket::encode)
+                .decoder(ConfigSyncPacket::new)
+                .consumerMainThread(ConfigSyncPacket::handle)
+                .add();
     }
 
     public static void sendToServer(Object packet) {
@@ -50,5 +56,9 @@ public final class MekaNetwork {
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+    }
+
+    public static void sendToAll(Object packet) {
+        CHANNEL.send(PacketDistributor.ALL.noArg(), packet);
     }
 }

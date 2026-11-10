@@ -5,6 +5,9 @@
     "#minecraft:mineable/axe",
     "#minecraft:mineable/shovel",
     "#minecraft:mineable/hoe",
-    "#forge:mineable/paxel"
+    {
+      "id": "#forge:mineable/paxel",
+      "required": false
+    }
   ]
 }

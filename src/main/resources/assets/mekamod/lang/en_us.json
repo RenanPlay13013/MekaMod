@@ -19,5 +19,7 @@
   "item.mekamod.divin_potato": "Divin Potato",
   "item.mekamod.divin_caputino": "Divin Caputino",
   "item.mekamod.meka_glove": "Meka Glove",
-  "item.mekamod.meka_glove.desc": "Enables Auto Attack when equipped"
+  "item.mekamod.meka_glove.desc": "Enables Auto Attack when equipped",
+  "item.mekamod.meka_armor.magic_resistance": "Absorbs %s%% of magic damage (%s%% as a full set)",
+  "item.mekamod.meka_capacitor": "Meka Capacitor"
 }

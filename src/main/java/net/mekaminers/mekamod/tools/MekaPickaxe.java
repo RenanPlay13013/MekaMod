@@ -1,35 +1,53 @@
 package net.mekaminers.mekamod.tools;
 
-import net.mekaminers.mekamod.ItemRegistry;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.Ingredient;
+import com.google.common.collect.Multimap;
+import net.mekaminers.mekamod.Config;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * The Meka pickaxe.
+ *
+ * <p>Its stats come from {@code tools.pickaxe} in the config. Vanilla bakes a tool's
+ * stats into fields in the constructor, so the overrides below answer from the
+ * config instead, through the stack-sensitive accessors the game calls at runtime.
+ */
 public class MekaPickaxe extends PickaxeItem {
+
+    private final LiveToolStats stats = new LiveToolStats(Config.PICKAXE);
+
     public MekaPickaxe() {
-        super(new Tier() {
-            public int getUses() {
-                return 3000;
-            }
+        super(new ConfigurableTier(Config.PICKAXE),
+                (int) Config.floatValue(Config.PICKAXE.attackDamage),
+                Config.floatValue(Config.PICKAXE.attackSpeed),
+                new Item.Properties());
+    }
 
-            public float getSpeed() {
-                return 200f;
-            }
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return slot == EquipmentSlot.MAINHAND
+                ? this.stats.modifiers(BASE_ATTACK_DAMAGE_UUID, BASE_ATTACK_SPEED_UUID)
+                : super.getAttributeModifiers(slot, stack);
+    }
 
-            public float getAttackDamageBonus() {
-                return 11f;
-            }
-            @Override
-            public int getLevel() {
-                return 4;
-            }
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return this.stats.durability();
+    }
 
-            public int getEnchantmentValue() {
-                return 50;
-            }
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return this.stats.enchantmentValue();
+    }
 
-            public Ingredient getRepairIngredient() {
-                return Ingredient.of(new ItemStack(ItemRegistry.MEKA_INGOT.get()));
-            }
-        }, 0, -3f, new Item.Properties());
-    };
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return state.is(BlockTags.MINEABLE_WITH_PICKAXE) ? this.stats.miningSpeed() : 1.0F;
+    }
 }

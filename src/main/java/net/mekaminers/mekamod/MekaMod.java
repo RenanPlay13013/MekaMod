@@ -3,6 +3,7 @@ package net.mekaminers.mekamod;
 import com.mojang.logging.LogUtils;
 import net.mekaminers.mekamod.client.ClientAutoAttackHandler;
 import net.mekaminers.mekamod.combat.AutoAttackHandler;
+import net.mekaminers.mekamod.combat.MagicResistanceHandler;
 import net.mekaminers.mekamod.network.MekaNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -40,6 +41,8 @@ public class MekaMod {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
+        MinecraftForge.EVENT_BUS.register(new MagicResistanceHandler());
+
         MekaNetwork.register();
 
         // The glove only exists with Curios, so neither side of its auto-attack
@@ -50,7 +53,10 @@ public class MekaMod {
         }
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        // SERVER rather than COMMON: Forge stores it per world, hands it to every
+        // client on connect, and still watches the file, so one authoritative copy
+        // stays live. ConfigSyncHandler pushes later edits to players already on.
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

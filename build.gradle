@@ -120,39 +120,37 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
-    // flatDir {
-    //     dir 'libs'
-    // }
-
+    //Curios Maven
     maven {
         name = "Illusive Soulworks maven"
         url = "https://maven.theillusivec4.top/"
     }
 
+    //EnderIO Maven
+    maven { url 'https://maven.rover656.dev/releases' }
+
+    //Registrate, a library EnderIO needs at runtime
+    maven { url 'https://maven.tterrag.com/' }
 }
 
 dependencies {
-    // Specify the version of Minecraft to use.
-    // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
-    // The "userdev" classifier will be requested and setup by ForgeGradle.
-    // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
-    // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
-    // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
-
+    //Curios
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
-
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+
+    //EnderIO
+    compileOnly fg.deobf("com.enderio:EnderIO:${enderio_version}")
+    runtimeOnly fg.deobf("com.enderio:EnderIO:${enderio_version}")
+
+    // EnderIO bundles these with jar-in-jar when it ships, but its Maven POM
+    // declares no dependencies and fg.deobf does not unpack jar-in-jar, so in a
+    // dev workspace they have to be added by hand or EnderIO dies on startup.
+    // Registrate is used by EnderIO's own main class; graph3 by its conduits,
+    // capacitor bank, multi-energy and solar block entities.
+    runtimeOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    runtimeOnly fg.deobf("dev.gigaherz.graph:GraphLib3:${graphlib_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

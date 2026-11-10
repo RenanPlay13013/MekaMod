@@ -1,12 +1,11 @@
 package net.mekaminers.mekamod;
 
 import net.mekaminers.mekamod.curios.MekaGlove;
+import net.mekaminers.mekamod.enderio.MekaCapacitor;
 import net.mekaminers.mekamod.materials.MekaIngot;
 import net.mekaminers.mekamod.materials.MekaNugget;
 import net.mekaminers.mekamod.materials.RawMeka;
 import net.mekaminers.mekamod.tools.*;
-import net.minecraft.world.effect.InstantenousMobEffect;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -64,9 +63,25 @@ public class ItemRegistry {
             ? ITEMS.register("meka_glove", MekaGlove::new)
             : null;
 
+    /**
+     * Optional item: without EnderIO there is no machine to wear it in, so it is not
+     * registered at all rather than existing as an unusable item. The
+     * {@code MekaCapacitor::new} reference is only linked if this branch runs, which
+     * keeps the EnderIO-dependent class off the classpath otherwise.
+     */
+    @Nullable
+    private static final RegistryObject<Item> MEKA_CAPACITOR = MekaCompat.isEnderioLoaded()
+            ? ITEMS.register("meka_capacitor", MekaCapacitor::new)
+            : null;
+
     /** The glove, or empty when Curios is not installed. */
     public static Optional<Item> getMekaGlove() {
         return MEKA_GLOVE == null ? Optional.empty() : Optional.of(MEKA_GLOVE.get());
+    }
+
+    /** The capacitor, or empty when EnderIO is not installed. */
+    public static Optional<Item> getMekaCapacitor() {
+        return MEKA_CAPACITOR == null ? Optional.empty() : Optional.of(MEKA_CAPACITOR.get());
     }
 
     public static final RegistryObject<Item> MEKA_BLOCK = ITEMS.register("meka_block",
