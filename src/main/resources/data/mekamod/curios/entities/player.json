@@ -3,6 +3,7 @@
     "minecraft:player"
   ],
   "slots": [
-    "hands"
+    "hands",
+    "bracelet"
   ]
 }

@@ -1,6 +1,7 @@
 package net.mekaminers.mekamod;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.mekaminers.mekamod.curios.CuriosCompat;
 import net.minecraftforge.fml.ModList;
 
@@ -35,5 +36,12 @@ public final class MekaCompat {
      */
     public static boolean hasMekaGlove(Player player) {
         return CURIOS_LOADED && CuriosCompat.hasGlove(player);
+    }
+
+    /**
+     * The Meka Relic the player is wearing, or an empty stack.
+     */
+    public static ItemStack findMekaRelic(Player player) {
+        return CURIOS_LOADED ? CuriosCompat.findRelic(player) : ItemStack.EMPTY;
     }
 }

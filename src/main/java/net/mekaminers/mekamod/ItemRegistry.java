@@ -1,6 +1,7 @@
 package net.mekaminers.mekamod;
 
 import net.mekaminers.mekamod.curios.MekaGlove;
+import net.mekaminers.mekamod.curios.MekaRelic;
 import net.mekaminers.mekamod.enderio.MekaCapacitor;
 import net.mekaminers.mekamod.materials.MekaIngot;
 import net.mekaminers.mekamod.materials.MekaNugget;
@@ -73,6 +74,17 @@ public class ItemRegistry {
     private static final RegistryObject<Item> MEKA_CAPACITOR = MekaCompat.isEnderioLoaded()
             ? ITEMS.register("meka_capacitor", MekaCapacitor::new)
             : null;
+
+    /** Optional item, for the same reason as the glove: it needs a Curios slot. */
+    @Nullable
+    private static final RegistryObject<Item> MEKA_RELIC = MekaCompat.isCuriosLoaded()
+            ? ITEMS.register("meka_relic", MekaRelic::new)
+            : null;
+
+    /** The relic, or empty when Curios is not installed. */
+    public static Optional<Item> getMekaRelic() {
+        return MEKA_RELIC == null ? Optional.empty() : Optional.of(MEKA_RELIC.get());
+    }
 
     /** The glove, or empty when Curios is not installed. */
     public static Optional<Item> getMekaGlove() {

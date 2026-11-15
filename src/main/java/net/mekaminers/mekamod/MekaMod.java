@@ -3,6 +3,7 @@ package net.mekaminers.mekamod;
 import com.mojang.logging.LogUtils;
 import net.mekaminers.mekamod.client.ClientAutoAttackHandler;
 import net.mekaminers.mekamod.combat.AutoAttackHandler;
+import net.mekaminers.mekamod.curios.RelicKillHandler;
 import net.mekaminers.mekamod.combat.MagicResistanceHandler;
 import net.mekaminers.mekamod.network.MekaNetwork;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +50,7 @@ public class MekaMod {
         // is hooked up without it.
         if (MekaCompat.isCuriosLoaded()) {
             MinecraftForge.EVENT_BUS.register(new AutoAttackHandler());
+            MinecraftForge.EVENT_BUS.register(new RelicKillHandler());
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientAutoAttackHandler::register);
         }
 

@@ -21,5 +21,8 @@
   "item.mekamod.meka_glove": "Luva de Meka",
   "item.mekamod.meka_glove.desc": "Habilita ataque automático quando equipado",
   "item.mekamod.meka_armor.magic_resistance": "Absorve %s%% do dano mágico (%s%% com o conjunto completo)",
-  "item.mekamod.meka_capacitor": "Capacitor de Meka"
+  "item.mekamod.meka_capacitor": "Capacitor de Meka",
+  "item.mekamod.meka_relic": "Relíquia de Meka",
+  "item.mekamod.meka_relic.kills": "%s pontos de abate",
+  "item.mekamod.meka_relic.health": "+%s de vida máxima (%s corações)"
 }

@@ -46,6 +46,7 @@ public final class Config {
     public static final ToolValues HOE;
     public static final ToolValues PAXEL;
     public static final ArmorValues ARMOR;
+    public static final RelicValues RELIC;
     public static final ForgeConfigSpec.DoubleValue CAPACITOR_BASE;
 
     /**
@@ -76,6 +77,7 @@ public final class Config {
         builder.pop();
 
         ARMOR = ArmorValues.define(builder);
+        RELIC = RelicValues.define(builder);
 
         builder.comment("Ender IO integration. Ignored when Ender IO is not installed.").push("enderio");
         CAPACITOR_BASE = builder
@@ -172,6 +174,39 @@ public final class Config {
                             .defineInRange("attack_speed", attackSpeed, -3.9D, 100.0D));
             builder.pop();
             return values;
+        }
+    }
+
+    /** The tunables of the Meka Relic. */
+    public static final class RelicValues {
+
+        public final ForgeConfigSpec.DoubleValue maxKillPoints;
+        public final ForgeConfigSpec.DoubleValue maxHealthBonus;
+        public final ForgeConfigSpec.DoubleValue playerKillValue;
+        public final ForgeConfigSpec.DoubleValue mobKillValue;
+
+        private RelicValues(ForgeConfigSpec.Builder builder) {
+            builder.comment("Meka Relic. The kill total lives on the item, not on the player,",
+                    "so handing the relic over hands the progress over with it.").push("relic");
+            this.maxKillPoints = builder
+                    .comment("Kill points at which the relic gives its full health bonus.",
+                            "Points past this are still kept on the item, so lowering this and",
+                            "raising it again does not lose progress.")
+                    .defineInRange("max_kill_points", 1000.0D, 0.01D, 1000000.0D);
+            this.maxHealthBonus = builder
+                    .comment("Health the relic adds once max_kill_points is reached, in half hearts,",
+                            "the same unit as the vanilla max health of 20. The bonus grows with the",
+                            "kill total: each point is worth max_health_bonus / max_kill_points.")
+                    .defineInRange("max_health_bonus", 100.0D, 0.0D, 1000.0D);
+            this.playerKillValue = builder.comment("Kill points for killing a player.")
+                    .defineInRange("player_kill_value", 1.0D, 0.0D, 1000.0D);
+            this.mobKillValue = builder.comment("Kill points for killing anything else.")
+                    .defineInRange("mob_kill_value", 0.25D, 0.0D, 1000.0D);
+            builder.pop();
+        }
+
+        private static RelicValues define(ForgeConfigSpec.Builder builder) {
+            return new RelicValues(builder);
         }
     }
 
